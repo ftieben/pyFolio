@@ -1,3 +1,5 @@
 influxdb
-alphaVantage-api
 pandas
+python-coinmarketcap
+yfinance
+import os
