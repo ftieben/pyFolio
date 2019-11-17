@@ -2,4 +2,3 @@ influxdb
 pandas
 python-coinmarketcap
 yfinance
-import os
