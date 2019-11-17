@@ -17,26 +17,28 @@ def get_api_key():
 
 def readPortfolio():
     porfolio_csv = os.path.join("config", "portfolio.csv")
-    df = pd.DataFrame.from_csv(porfolio_csv)
+    df = pd.read_csv(porfolio_csv)
     return df
 
 
-def getData(portfolio):
-    current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-    for item in portfolio:
-        item.update({'time': current_time})
-        if item["type"] == "crypto":
+def getData(df):
+    for index, row in df.iterrows():
+        if row["type"] == "crypto":
             cmc = coinmarketcapapi.CoinMarketCapAPI(get_api_key(), sandbox=False)
-            extract = cmc.cryptocurrency_quotes_latest(symbol=item["name"])
-            price = extract.data[item["name"]]["quote"]["USD"]["price"]
-            summe = price * item["amount"]
-            item.update({'price': price, 'sum': summe})
+            extract = cmc.cryptocurrency_quotes_latest(symbol=row["name"])
+            row["price"] = extract.data[row["name"]]["quote"]["USD"]["price"]
+            row["sum"] = row["price"] * row["amount"]
+            df.loc[index, "price"] = row["price"]
+            df.loc[index, "sum"] = row["sum"]
         else:
-            extract = yf.Ticker(item["name"])
-            price = extract.info["regularMarketPrice"]
-            summe = price * item["amount"]
-            item.update({'price': price, 'sum': summe})
-    return portfolio
+            extract = yf.Ticker(row["name"])
+            row["price"] = extract.info["regularMarketPrice"]
+            row["sum"] = row["price"] * row["amount"]
+            df.loc[index, "price"] = row["price"]
+            df.loc[index, "sum"] = row["sum"]
+    print(df)
+    return df
+
 
 def main():
     influx \
@@ -45,5 +47,4 @@ def main():
             readPortfolio()))
 
 if __name__ == '__main__':
-    print("hallo")
     main()
