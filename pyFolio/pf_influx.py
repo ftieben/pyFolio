@@ -12,7 +12,7 @@ def write_to_influx(df):
 
     """Instantiate the connection to the InfluxDB client."""
     host = "localhost"
-    port = 9200
+    port = 8086
     user = 'root'
     password = 'root'
     dbname = 'demo'
@@ -30,10 +30,10 @@ def write_to_influx(df):
     client.write_points(df, 'demo',
                         {'k1': 'v1', 'k2': 'v2'}, protocol=protocol)
 
-    print("Read DataFrame")
-    client.query("select * from demo")
+    # print("Read DataFrame")
+    # client.query("select * from demo")
 
-    print("Delete database: " + dbname)
-    client.drop_database(dbname)
+    # print("Delete database: " + dbname)
+    # client.drop_database(dbname)
 
     return True
