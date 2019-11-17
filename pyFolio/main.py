@@ -36,7 +36,6 @@ def getData(df):
             row["sum"] = row["price"] * row["amount"]
             df.loc[index, "price"] = row["price"]
             df.loc[index, "sum"] = row["sum"]
-    print(df)
     return df
 
 
