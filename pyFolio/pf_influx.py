@@ -24,9 +24,6 @@ def write_to_influx(df):
         payload = [
             {
                 "measurement": row["name"],
-                "tags": {
-                    "type": row["type"],
-                },
                 "time": current_time,
                 "fields": {
                     "amount": row["amount"],
