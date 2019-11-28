@@ -14,7 +14,7 @@ def readPortfolio():
 def getData(df):
     for index, row in df.iterrows():
         extract = yf.Ticker(row["name"])
-        row["price"] = extract.info["regularMarketPrice"]
+        row["price"] = extract.info["regularMarketOpen"]
         row["sum"] = row["price"] * row["amount"]
         df.loc[index, "price"] = row["price"]
         df.loc[index, "sum"] = row["sum"]
