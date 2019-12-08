@@ -18,14 +18,13 @@ def getData(df):
         row["sum"] = row["price"] * row["amount"]
         df.loc[index, "price"] = row["price"]
         df.loc[index, "sum"] = row["sum"]
+        influx.write_row_to_influx(row)
     return df
 
 
 def main():
-    influx \
-        .write_to_influx(
-        getData(
-            readPortfolio()))
+   getData(readPortfolio())
+
 
 if __name__ == '__main__':
     main()
